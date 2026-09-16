@@ -1,0 +1,69 @@
+Multilayer Perceptron for Breast Cancer Classification
+Aim
+To implement a Multilayer Perceptron (MLP) classifier for breast cancer classification
+using:
+1. a machine-learning library, and
+2. a from-scratch implementation using NumPy, forward propagation, and backprop-
+agation.
+Dataset
+Use the Breast Cancer Wisconsin Diagnostic Dataset available through sklearn.datasets.
+The dataset contains:
+• Number of samples: 569
+• Number of features: 30
+• Number of classes: 2
+• Target classes: Malignant and Benign
+Part A: MLP Using a Machine-Learning Library
+Task
+Develop an MLP classifier to predict whether a breast tumor is malignant or benign.
+Students must perform the following steps:
+1. Load the Breast Cancer dataset.
+2. Separate the features and target variable.
+3. Perform appropriate feature scaling.
+4. Divide the dataset into training and testing sets.
+5. Construct an MLP classifier containing:
+• Input layer
+• One or more hidden layers
+• Output layer
+6. Train the MLP using the training data.
+7. Predict the classes of the test data.
+8. Evaluate the trained model.
+9. Display the classification results.
+
+Experimental Study
+Students must investigate the effect of changing the following parameters:
+No. Parameter to Investigate
+1 Number of hidden layers
+2 Number of neurons in each hidden layer
+3 Learning rate
+4 Number of training iterations/epochs
+5 Activation function
+Table 1: MLP parameters for experimental study
+Students should change one parameter at a time while keeping the other parameters
+fixed and observe the effect on model performance.
+Questions
+1. What happens to the model when the number of neurons in the hidden layer is
+increased?
+2. What happens when the learning rate is very small?
+3. What happens when the learning rate is very large?
+4. Compare an MLP with one hidden layer and an MLP with two hidden layers.
+5. Why is a nonlinear activation function required in the hidden layers?
+6. What happens if all the layers use a linear activation function?
+7. Why can increasing the number of hidden neurons sometimes lead to overfitting?
+Part B: MLP From Scratch
+Task
+Implement an MLP from scratch for the same Breast Cancer Wisconsin Diagnostic
+Dataset.
+The implementation must not use an existing MLP or neural-network implementation
+from a machine-learning library.
+Students may use NumPy for matrix operations and numerical computations.
+The implementation must include the following components:
+1. Weight initialization
+2. Bias initialization
+3. Forward propagation
+4. Activation function
+5. Loss/error calculation
+6. Backpropagation
+7. Weight update
+8. Bias update
+9. Iterative training
+10. Prediction
