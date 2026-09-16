@@ -1,0 +1,128 @@
+import numpy as np
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score
+
+# Load dataset
+data = load_breast_cancer()
+
+X = data.data
+y = data.target.reshape(-1, 1)
+
+# Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Feature scaling
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# MLP architecture
+# Input layer = 30 features
+# Hidden layer 1 = 10 neurons
+# Hidden layer 2 = 10 neurons
+# Output layer = 1 neuron
+
+input_size = 30
+hidden1_size = 10
+hidden2_size = 10
+output_size = 1
+
+learning_rate = 0.01
+epochs = 1000
+
+# Initialize weights and biases
+np.random.seed(42)
+
+W1 = np.random.randn(input_size, hidden1_size) * 0.01
+b1 = np.zeros((1, hidden1_size))
+
+W2 = np.random.randn(hidden1_size, hidden2_size) * 0.01
+b2 = np.zeros((1, hidden2_size))
+
+W3 = np.random.randn(hidden2_size, output_size) * 0.01
+b3 = np.zeros((1, output_size))
+
+
+# Sigmoid activation function
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+
+# Derivative of sigmoid
+def sigmoid_derivative(x):
+    return x * (1 - x)
+
+
+# Training
+for epoch in range(epochs):
+
+    # ---------- FORWARD PROPAGATION ----------
+
+    Z1 = np.dot(X_train, W1) + b1
+    A1 = sigmoid(Z1)
+
+    Z2 = np.dot(A1, W2) + b2
+    A2 = sigmoid(Z2)
+
+    Z3 = np.dot(A2, W3) + b3
+    A3 = sigmoid(Z3)
+
+    # ---------- BACKPROPAGATION ----------
+
+    error = A3 - y_train
+
+    dZ3 = error
+    dW3 = np.dot(A2.T, dZ3) / len(X_train)
+    db3 = np.sum(dZ3, axis=0, keepdims=True) / len(X_train)
+
+    dA2 = np.dot(dZ3, W3.T)
+    dZ2 = dA2 * sigmoid_derivative(A2)
+
+    dW2 = np.dot(A1.T, dZ2) / len(X_train)
+    db2 = np.sum(dZ2, axis=0, keepdims=True) / len(X_train)
+
+    dA1 = np.dot(dZ2, W2.T)
+    dZ1 = dA1 * sigmoid_derivative(A1)
+
+    dW1 = np.dot(X_train.T, dZ1) / len(X_train)
+    db1 = np.sum(dZ1, axis=0, keepdims=True) / len(X_train)
+
+    # ---------- UPDATE WEIGHTS AND BIASES ----------
+
+    W3 = W3 - learning_rate * dW3
+    b3 = b3 - learning_rate * db3
+
+    W2 = W2 - learning_rate * dW2
+    b2 = b2 - learning_rate * db2
+
+    W1 = W1 - learning_rate * dW1
+    b1 = b1 - learning_rate * db1
+
+
+# ---------- TESTING / PREDICTION ----------
+
+Z1 = np.dot(X_test, W1) + b1
+A1 = sigmoid(Z1)
+
+Z2 = np.dot(A1, W2) + b2
+A2 = sigmoid(Z2)
+
+Z3 = np.dot(A2, W3) + b3
+A3 = sigmoid(Z3)
+
+# Convert probabilities to 0 or 1
+y_pred = (A3 >= 0.5).astype(int)
+
+
+# ---------- RESULTS ----------
+
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Predicted:", y_pred.flatten())
+print("Actual:   ", y_test.flatten())
+print("Accuracy:", accuracy)
+print("Accuracy Percentage:", accuracy * 100, "%")
